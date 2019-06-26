@@ -1,4 +1,4 @@
-package com.hao.notes.netty;
+package com.hao.notes.utils;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -16,7 +16,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.SneakyThrows;
 
-public class Utils {
+public class NettyUtils {
+
+    public static Channel connect() {
+        return connectTo("localhost", 40839);
+    }
 
     public static Channel connectTo(String ip, int port) {
         ChannelInitializer<SocketChannel> channelInitializer = new ChannelInitializer<SocketChannel>() {

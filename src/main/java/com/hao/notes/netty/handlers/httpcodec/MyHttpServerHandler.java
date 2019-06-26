@@ -13,7 +13,9 @@ import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class MyHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
     @Override
@@ -26,6 +28,8 @@ class MyHttpServerHandler extends SimpleChannelInboundHandler<HttpObject> {
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
             response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
             ctx.writeAndFlush(response);
+        } else {
+            log.warn("Receive {} ({})", msg, msg.getClass());
         }
     }
 

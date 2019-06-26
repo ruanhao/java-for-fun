@@ -1,7 +1,7 @@
 package com.hao.notes.netty.handlers.callbacks;
 
-import static com.hao.notes.netty.Utils.close;
-import static com.hao.notes.netty.Utils.connectTo;
+import static com.hao.notes.utils.NettyUtils.close;
+import static com.hao.notes.utils.NettyUtils.connectTo;
 
 import java.util.concurrent.TimeUnit;
 

@@ -38,4 +38,25 @@ public class Examples {
 
     }
 
+    @Test
+    @SneakyThrows
+    public void testHttpServerCodecWithAggregator() {
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(1);
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
+                    .childHandler(new MyChannelInitializerWithAggregator());
+            ChannelFuture channelFuture = b.bind(PORT).sync();
+            RestTemplate restTemplate = new RestTemplate();
+            String response = restTemplate.getForObject("http://localhost:" + PORT, String.class);
+            assertEquals("Hello Shanghai", response);
+            channelFuture.channel().close();
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
+
+    }
+
 }

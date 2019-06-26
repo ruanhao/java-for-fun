@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
-import com.hao.notes.netty.Utils;
+import com.hao.notes.utils.NettyUtils;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -28,7 +28,7 @@ public class Examples {
              .channel(NioServerSocketChannel.class)
              .childHandler(new MyServerChannelInitializer());
             ChannelFuture channelFuture = b.bind(PORT).sync();
-            Utils.connectTo("localhost", PORT, new MyClientChannelInitializer());
+            NettyUtils.connectTo("localhost", PORT, new MyClientChannelInitializer());
             TimeUnit.SECONDS.sleep(3L);
             channelFuture.channel().close();
         } finally {
