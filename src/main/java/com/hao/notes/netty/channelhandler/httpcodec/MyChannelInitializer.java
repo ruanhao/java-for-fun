@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.httpcodec;
+package com.hao.notes.netty.channelhandler.httpcodec;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;

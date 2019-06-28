@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.callbacks;
+package com.hao.notes.netty.channelhandler.callbacks;
 
 import static com.hao.notes.utils.NettyUtils.close;
 import static com.hao.notes.utils.NettyUtils.connectTo;

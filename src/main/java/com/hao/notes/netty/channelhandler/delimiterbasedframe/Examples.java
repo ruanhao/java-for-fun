@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.lengthfieldbasedframe;
+package com.hao.notes.netty.channelhandler.delimiterbasedframe;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +19,7 @@ public class Examples {
 
     @Test
     @SneakyThrows
-    public void testLengthBasedFrameDecoder() {
+    public void testLineDelimiter() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(1);
         try {

@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.idlestate;
+package com.hao.notes.netty.channelhandler.idlestate;
 
 import java.util.concurrent.TimeUnit;
 

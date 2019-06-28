@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.websocket;
+package com.hao.notes.netty.channelhandler.websocket;
 
 import java.time.LocalDateTime;
 

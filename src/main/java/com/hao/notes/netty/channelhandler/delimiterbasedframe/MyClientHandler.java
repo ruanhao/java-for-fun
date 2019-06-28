@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.delimiterbasedframe;
+package com.hao.notes.netty.channelhandler.delimiterbasedframe;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

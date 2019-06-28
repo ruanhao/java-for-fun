@@ -1,8 +1,6 @@
-package com.hao.notes.netty.handlers.idlestate;
+package com.hao.notes.netty.channelhandler.websocket;
 
 import org.junit.Test;
-
-import com.hao.notes.utils.NettyUtils;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -19,7 +17,7 @@ public class Examples {
 
     @Test
     @SneakyThrows
-    public void testIdleStates() {
+    public void testWebSocketServer() {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(1);
         try {
@@ -29,7 +27,6 @@ public class Examples {
              .handler(new LoggingHandler(LogLevel.INFO))
              .childHandler(new MyServerChannelInitializer());
             ChannelFuture channelFuture = b.bind(PORT).sync();
-            NettyUtils.connect();
             channelFuture.channel().closeFuture().sync();
         } finally {
             bossGroup.shutdownGracefully();

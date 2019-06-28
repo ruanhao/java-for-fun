@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.lengthfieldbasedframe;
+package com.hao.notes.netty.channelhandler.lengthfieldbasedframe;
 
 import com.google.common.base.Charsets;
 
@@ -9,7 +9,7 @@ import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-class MyServerChannelInitializer extends ChannelInitializer<SocketChannel> {
+class MyClientChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -17,7 +17,7 @@ class MyServerChannelInitializer extends ChannelInitializer<SocketChannel> {
         ch.pipeline().addLast(new LengthFieldPrepender(4));
         ch.pipeline().addLast(new StringDecoder(Charsets.UTF_8));
         ch.pipeline().addLast(new StringEncoder(Charsets.UTF_8));
-        ch.pipeline().addLast(new MyServerHandler());
+        ch.pipeline().addLast(new MyClientHandler());
     }
 
 }

@@ -1,21 +1,25 @@
-package com.hao.notes.netty.handlers.delimiterbasedframe;
-
-import java.time.LocalDateTime;
+package com.hao.notes.netty.channelhandler.lengthfieldbasedframe;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-class MyServerHandler extends SimpleChannelInboundHandler<String> {
+class MyClientHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-      log.info("[Server] <= {} ({})", msg, ctx.channel().remoteAddress());
-      String response = LocalDateTime.now().toString();
-      ctx.writeAndFlush(response);
-      log.info("[Server] => {} ({})", response, ctx.channel().remoteAddress());
+      log.info("[Client] <= {} ({})", msg, ctx.channel().remoteAddress());
     }
+
+
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        ctx.writeAndFlush("test");
+    }
+
+
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {

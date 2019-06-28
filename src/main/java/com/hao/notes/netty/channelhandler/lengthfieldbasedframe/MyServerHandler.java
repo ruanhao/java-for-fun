@@ -1,4 +1,4 @@
-package com.hao.notes.netty.handlers.lengthfieldbasedframe;
+package com.hao.notes.netty.channelhandler.lengthfieldbasedframe;
 
 import java.time.LocalDateTime;
 
