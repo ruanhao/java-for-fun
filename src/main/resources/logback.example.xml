@@ -1,5 +1,4 @@
 <configuration>
-
 	<appender name="STDERR"
 		class="ch.qos.logback.core.ConsoleAppender">
 		<target>System.err</target>
@@ -7,7 +6,6 @@
 			<Pattern>
 				%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
 			</Pattern>
-
 		</encoder>
 	</appender>
 
@@ -31,5 +29,4 @@
 	<root level="info">
 		<appender-ref ref="CONSOLE" />
 	</root>
-
 </configuration>
