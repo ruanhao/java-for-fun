@@ -18,7 +18,7 @@ import lombok.SneakyThrows;
 @TestPropertySource(properties={
         "server.port=40839"
 })
-public class SwaggerExample {
+public class Examples {
 
     @Test
     @SneakyThrows
