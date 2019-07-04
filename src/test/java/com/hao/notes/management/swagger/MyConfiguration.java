@@ -1,4 +1,4 @@
-package com.hao.notes.monitor.actuator;
+package com.hao.notes.management.swagger;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableSwagger2
-class Configuration {
+class MyConfiguration {
 
     @Bean
     public Docket api() {
