@@ -13,7 +13,7 @@ import io.netty.util.ByteProcessor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Examples {
+public class OperationExamples {
 
     @Test
     public void testCompositeByteBuf() {
