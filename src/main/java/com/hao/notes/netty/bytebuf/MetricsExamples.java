@@ -15,7 +15,9 @@ import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 
 import com.google.common.base.Charsets;
+import com.hao.notes.utils.NettyUtils;
 
+import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocatorMetric;
 import io.netty.buffer.PoolArenaMetric;
@@ -23,8 +25,16 @@ import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.buffer.PooledByteBufAllocatorMetric;
 import io.netty.buffer.Unpooled;
 import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.internal.PlatformDependent;
 import lombok.SneakyThrows;
 
@@ -250,6 +260,65 @@ public class MetricsExamples {
         field.setAccessible(true);
         AtomicLong value = (AtomicLong) field.get(PlatformDependent.class);
         System.out.println(value);
+    }
 
+
+    @Test
+    @SneakyThrows
+    public void monitorMetric() {
+        EventLoopGroup bossGroup = new NioEventLoopGroup(1);
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        Field field = ReflectionUtils.findField(PlatformDependent.class, "DIRECT_MEMORY_COUNTER");
+        field.setAccessible(true);
+        AtomicLong counter = (AtomicLong) field.get(PlatformDependent.class);
+        try {
+            ServerBootstrap b = new ServerBootstrap();
+            b.group(bossGroup, workerGroup)
+            .channel(NioServerSocketChannel.class)
+            .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT)
+            .childHandler(new ChannelInitializer<SocketChannel>() {
+                @Override
+                protected void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
+                        @Override
+                        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+                            ReferenceCountUtil.release(msg);
+                        }
+                    });
+
+                }
+            });
+            b.bind(40839).sync();
+            Channel client = NettyUtils.connectTo("localhost", 40839);
+            while (true) {
+                int size = 1024 * 1024 * 8; // 8M
+                // ByteBuf buf = Unpooled.copiedBuffer(new byte[size]);
+                ByteBuf buf = PooledByteBufAllocator.DEFAULT.directBuffer(size);
+                buf.writeBytes(new byte[size]);
+                client.writeAndFlush(buf);
+
+                long usedUnpooledHeapBuffer = UnpooledByteBufAllocator.DEFAULT.metric().usedHeapMemory();
+                long usedUnpooledDirectBuffer = UnpooledByteBufAllocator.DEFAULT.metric().usedDirectMemory();
+
+                long usedPooledHeapBuffer = PooledByteBufAllocator.DEFAULT.metric().usedHeapMemory();
+                long usedPooledDirectBuffer = PooledByteBufAllocator.DEFAULT.metric().usedDirectMemory();
+
+                int numThreadLocalCaches = PooledByteBufAllocator.DEFAULT.metric().numThreadLocalCaches();
+
+                System.err.println(String.format("Total heap: %d [unpooled: %d, pooled: %d]",
+                        usedUnpooledHeapBuffer + usedPooledHeapBuffer, usedUnpooledHeapBuffer, usedPooledHeapBuffer));
+                System.err.println(String.format("Total direct: %d [unpooled: %d, pooled: %d]",
+                        usedUnpooledDirectBuffer + usedPooledDirectBuffer, usedUnpooledDirectBuffer, usedPooledDirectBuffer));
+                System.err.println("numThreadLocalCaches: " + numThreadLocalCaches);
+                System.err.println("DIRECT_MEMORY_COUNTER: " + counter);
+                System.err.println("========");
+
+                TimeUnit.SECONDS.sleep(3L);
+            }
+
+        } finally {
+            bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
+        }
     }
 }
