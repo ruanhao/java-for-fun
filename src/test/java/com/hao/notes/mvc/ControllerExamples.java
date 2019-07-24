@@ -57,5 +57,32 @@ public class ControllerExamples {
         .andExpect(MockMvcResultMatchers.status().isNotFound());
 
     }
+    
+    @Test
+    @SneakyThrows
+    public void testAntPath() {
+        
+        /*
+         * ?: 匹配一个字符
+         * *: 匹配多个任意字符
+         *  **: 匹配多层路径
+         */
+        
+        mockMvc.perform(MockMvcRequestBuilders.get("/testAntPath/a/b/c/test"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.handler().methodName("testAntPath2"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+                
+        mockMvc.perform(MockMvcRequestBuilders.get("/testAntPath/a/test"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.handler().methodName("testAntPath1"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+        
+        mockMvc.perform(MockMvcRequestBuilders.get("/testAntPath/abc/test"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.handler().methodName("testAntPath3"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+
+    }
 }
 
