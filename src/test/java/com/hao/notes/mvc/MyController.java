@@ -1,6 +1,8 @@
 package com.hao.notes.mvc;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,6 +29,16 @@ class MyController {
     @GetMapping(path="/testAntPath/ab?/test")
     public void testAntPath3() {
         System.out.println("ant path 3");
+    }
+    
+    @DeleteMapping(path = "/testHiddenHttpMethodFilterDelete")
+    public void testHiddenHttpMethodFilterDelete() {
+        
+    }
+    
+    @PutMapping(path = "/testHiddenHttpMethodFilterPut")
+    public void testHiddenHttpMethodFilterPut() {
+        
     }
 
 }

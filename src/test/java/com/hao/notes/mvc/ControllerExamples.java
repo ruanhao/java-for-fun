@@ -84,5 +84,26 @@ public class ControllerExamples {
         .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
+    
+    @Test
+    @SneakyThrows
+    public void testHiddenHttpMethodFilter() {
+        /*
+         *  浏览器表单只支持 GET 与 POST 请求，而 DELETE，PUT 等方法并不支持，
+         *  Spring3.0 添加了一个过滤器，可以将这些请求转换为标准的 HTTP 方法，
+         *  使得支持 GET，POST，PUT 与 DELETE 请求。  
+         */
+        mockMvc.perform(MockMvcRequestBuilders.post("/testHiddenHttpMethodFilterDelete")
+                .param("_method", "DELETE"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.handler().methodName("testHiddenHttpMethodFilterDelete"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+        
+        mockMvc.perform(MockMvcRequestBuilders.post("/testHiddenHttpMethodFilterPut")
+                .param("_method", "PUT"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.handler().methodName("testHiddenHttpMethodFilterPut"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
 
