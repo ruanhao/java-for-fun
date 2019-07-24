@@ -122,5 +122,18 @@ public class ControllerExamples {
 
 
     }
+    
+    @Test
+    @SneakyThrows
+    public void testServletApi() {
+        /*
+         * MVC 的 Handler 方法可以接受的 ServletAPI 类型的参数，具体可参考：
+         * org.springframework.web.servlet.mvc.method.annotation.ServletRequestMethodArgumentResolver.resolveArgument/4
+         */
+        mockMvc.perform(MockMvcRequestBuilders.get("/testServletApi"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.content().string("hello world"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
 

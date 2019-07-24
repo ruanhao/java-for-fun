@@ -1,10 +1,20 @@
 package com.hao.notes.mvc;
 
+import java.io.Reader;
+import java.io.Writer;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import lombok.SneakyThrows;
 
 @RestController
 class MyController {
@@ -45,6 +55,27 @@ class MyController {
     @GetMapping(path = "/testCookieValue")
     public String testCookieValue(@CookieValue("randomStr") String str) {
         return str;
+    }
+    
+    @GetMapping(path = "/testServletApi")
+    @SneakyThrows
+    public void testServletApi(HttpServletRequest request,
+            HttpServletResponse response,
+            HttpSession session,
+            // InputStream is,
+            // OutputStream os,
+            Reader reader,
+            Writer writer,
+            Locale locale
+            ) {
+        System.out.println(request);
+        System.out.println(response);
+        //System.out.println(is);
+        //System.out.println(os);
+        System.out.println(reader);
+        System.out.println(writer);  
+        System.out.println(locale);  
+        writer.write("hello world");
     }
 
 }
