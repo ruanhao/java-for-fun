@@ -1,5 +1,9 @@
 package com.hao.notes.mvc;
 
+import java.util.UUID;
+
+import javax.servlet.http.Cookie;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +108,19 @@ public class ControllerExamples {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.handler().methodName("testHiddenHttpMethodFilterPut"))
         .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+    
+    @Test
+    @SneakyThrows
+    public void testCookieValue() {
+        String randomStr = UUID.randomUUID().toString();
+        mockMvc.perform(MockMvcRequestBuilders.get("/testCookieValue")
+                .cookie(new Cookie("randomStr", randomStr)))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.content().string(randomStr))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+
+
     }
 }
 

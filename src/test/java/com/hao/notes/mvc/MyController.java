@@ -1,5 +1,6 @@
 package com.hao.notes.mvc;
 
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,6 +40,11 @@ class MyController {
     @PutMapping(path = "/testHiddenHttpMethodFilterPut")
     public void testHiddenHttpMethodFilterPut() {
         
+    }
+    
+    @GetMapping(path = "/testCookieValue")
+    public String testCookieValue(@CookieValue("randomStr") String str) {
+        return str;
     }
 
 }
