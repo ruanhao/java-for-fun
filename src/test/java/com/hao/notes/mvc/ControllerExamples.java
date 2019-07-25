@@ -157,5 +157,19 @@ public class ControllerExamples {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isOk());
      }
+    
+    @Test
+    @SneakyThrows
+    public void testConverter() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/testConverter")
+                .param("employee", "123-Peter"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk());
+        
+        mockMvc.perform(MockMvcRequestBuilders.get("/testConverter")
+                .param("employee", "123Peter"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isBadGateway()); // 自定义的错误码
+     }
 }
 
