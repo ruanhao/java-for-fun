@@ -171,5 +171,17 @@ public class ControllerExamples {
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isBadGateway()); // 自定义的错误码
      }
+    
+    @Test
+    @SneakyThrows
+    public void testInitBinder() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/testBinder")
+                .param("id", "123")
+                .param("name", "Mary"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(org.hamcrest.Matchers.not("123")))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("MARY"))
+        .andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
 

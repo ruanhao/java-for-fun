@@ -2,17 +2,21 @@ package com.hao.notes.mvc;
 
 import java.io.Reader;
 import java.io.Writer;
+import java.text.ParseException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.format.Formatter;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -111,5 +115,27 @@ class MyController {
         e.printStackTrace();
     }
     
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("id");
+        binder.addCustomFormatter(new Formatter<String>() {
+
+            @Override
+            public String print(String object, Locale locale) {
+                return object.toUpperCase();
+            }
+
+            @Override
+            public String parse(String text, Locale locale) throws ParseException {
+                return text.toUpperCase();
+            }
+        }, "name");
+    }
+    
+    @GetMapping(path = "/testBinder")
+    public Employee testBinder(Employee employee) {
+        System.out.println(employee);
+        return employee;
+    }
     
 }
