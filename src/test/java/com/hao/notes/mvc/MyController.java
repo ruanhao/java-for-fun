@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.SneakyThrows;
@@ -76,6 +78,21 @@ class MyController {
         System.out.println(writer);  
         System.out.println(locale);  
         writer.write("hello world");
+    }
+    
+    @ModelAttribute
+    public User user(@RequestParam(required = false) String id) {
+        System.err.println("Providing model attribute");
+        if (id == null) {
+            return User.builder().build();
+        } else {
+            return User.builder().id(id).build();
+        }
+    }
+    
+    @GetMapping(path = "/testModelAttribute")
+    public User testModelAttribute(@ModelAttribute User user) {
+        return user;
     }
 
 }

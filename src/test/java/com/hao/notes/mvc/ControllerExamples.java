@@ -135,5 +135,19 @@ public class ControllerExamples {
         .andExpect(MockMvcResultMatchers.content().string("hello world"))
         .andExpect(MockMvcResultMatchers.status().isOk());
     }
+    
+    @Test
+    @SneakyThrows
+    public void testModelAttribute() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/testModelAttribute?id=1"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value("1"));
+        
+        mockMvc.perform(MockMvcRequestBuilders.get("/testModelAttribute"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(org.hamcrest.Matchers.not("1")));
+    }
 }
 
