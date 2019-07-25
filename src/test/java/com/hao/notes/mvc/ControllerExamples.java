@@ -183,5 +183,35 @@ public class ControllerExamples {
         .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("MARY"))
         .andExpect(MockMvcResultMatchers.status().isOk());
     }
+    
+    @Test
+    @SneakyThrows
+    public void testDataFormatter() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/testDataFormatter")
+                .param("id", "123")
+                .param("name", "Mary")
+                .param("birthday", "2006-11-11")
+                .param("salary", "1,333,444.5"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk());
+        
+        mockMvc.perform(MockMvcRequestBuilders.get("/testDataFormatter")
+                .param("id", "123")
+                .param("name", "Mary")
+                .param("birthday", "06/11/11")
+                .param("salary", "3456"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        
+        mockMvc.perform(MockMvcRequestBuilders.get("/testDataFormatter2")
+                .param("id", "123")
+                .param("name", "Mary")
+                .param("birthday", "06/11/11")
+                .param("salary", "3456"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk()); // it is ok
+    }
+    
+    
 }
 

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.format.Formatter;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -138,4 +140,19 @@ class MyController {
         return employee;
     }
     
+    @GetMapping(path = "/testDataFormatter")
+    public Employee testDataFormatter(Employee employee) {
+        System.out.println(employee);
+        return employee;
+    }
+    
+    @GetMapping(path = "/testDataFormatter2")
+    public Employee testDataFormatter2(Employee employee, BindingResult bindingResult) {
+        if (bindingResult.getErrorCount() > 0) {
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                System.err.println(error.getField() + ": " + error.getDefaultMessage());        
+            }
+        }       
+        return employee;
+    }
 }
