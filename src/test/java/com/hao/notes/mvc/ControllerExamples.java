@@ -149,5 +149,13 @@ public class ControllerExamples {
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(org.hamcrest.Matchers.not("1")));
     }
+    
+    @Test
+    @SneakyThrows
+    public void testStaticResources() {
+        mockMvc.perform(MockMvcRequestBuilders.get("/hello.html"))
+        .andDo(MockMvcResultHandlers.print())
+        .andExpect(MockMvcResultMatchers.status().isOk());
+     }
 }
 
