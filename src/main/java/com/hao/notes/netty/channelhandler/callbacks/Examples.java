@@ -38,12 +38,14 @@ public class Examples {
                             ch.pipeline().addLast(new MyServerHandler());
                         }
                     });
+            b.bind(40840);
             ChannelFuture channelFuture = b.bind(PORT).sync();
+
             Channel client = connectTo("localhost", PORT);
             client.writeAndFlush(Unpooled.copiedBuffer("Hello World", Charsets.UTF_8));
             // client.writeAndFlush(Unpooled.copiedBuffer("Hey Man", Charsets.UTF_8));
             close(client);
-            TimeUnit.SECONDS.sleep(1L);
+            TimeUnit.SECONDS.sleep(999L);
             channelFuture.channel().close();
         } finally {
             bossGroup.shutdownGracefully();
