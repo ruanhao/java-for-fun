@@ -144,9 +144,6 @@ public class JvmLock {
         Thread.sleep(3000);
     }
 
-
-
-
 }
 
 class MyLock {
