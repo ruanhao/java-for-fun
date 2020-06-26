@@ -1,10 +1,10 @@
-package com.hao.springboot.hello;
+package com.hao.springboot.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class HelloApplicationTests {
+class WebApplicationTests {
 
     @Test
     void contextLoads() {

@@ -8,8 +8,10 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hello</artifactId>
-    <packaging>war</packaging>
+    <artifactId>web</artifactId>
+
+    <name>web</name>
+    <description>WEB 相关示例</description>
 
 
     <dependencies>
