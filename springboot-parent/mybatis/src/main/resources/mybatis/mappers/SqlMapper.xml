@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hao.springboot.mybatis.mapper.SqlMapper">
+
+    <select id="countAllEmployees" resultType="int">
+        select count(*) from EMP
+    </select>
+
+    <select id="countByComm" resultType="int">
+        select count(COMM) from EMP
+    </select>
+
+    <select id="maxSalByJob" resultType="com.hao.springboot.mybatis.po.Employee">
+        select JOB, max(SAL) as sal from EMP group by JOB
+    </select>
+
+    <select id="getEmployeesWithManagerName" resultType="com.hao.springboot.mybatis.vo.EmpWithMgrName">
+        select
+            e1.ENAME as ename, e2.ENAME as mgrName
+        from
+            EMP as e1
+        join
+            EMP as e2
+        on
+            e1.MGR = e2.EMPNO
+    </select>
+
+    <select id="getAllEmployeesWithManagerName" resultType="com.hao.springboot.mybatis.vo.EmpWithMgrName">
+        select
+            e1.ENAME as ename, e2.ENAME as mgrName
+        from
+            EMP as e1
+        left join
+            EMP as e2
+        on
+            e1.MGR = e2.EMPNO
+    </select>
+
+
+    <select id="getEmployeesWithDeptNameAndSalGrade" resultType="com.hao.springboot.mybatis.vo.EmpWithDeptNameAndSalGrade">
+        select
+            e.ENAME, d.DNAME, s.GRADE
+        from
+            EMP as e
+        left join
+            DEPT as d
+        ON
+            e.DEPTNO = d.DEPTNO
+        left join
+            SALGRADE as s
+        ON
+            e.SAL between s.LOSAL and s.HISAL
+    </select>
+
+    <select id="getDeptAvgSalGrade" resultType="com.hao.springboot.mybatis.vo.DeptNoWithAvgSalGrade">
+        SELECT
+            t.DEPTNO, s.GRADE
+        FROM
+            (
+                SELECT
+                    avg(e.SAL) as avgSal, e.DEPTNO
+                FROM
+                    EMP AS e
+                GROUP BY
+                    e.DEPTNO
+            ) as t
+         LEFT JOIN SALGRADE as s
+         ON t.avgSal between s.LOSAL and s.HISAL
+
+    </select>
+
+    <select id="getEmployeesWithDeptName" resultType="com.hao.springboot.mybatis.vo.EmpNameWithDeptName">
+        SELECT E.ENAME, (SELECT D.DNAME FROM DEPT D WHERE D.DEPTNO = E.DEPTNO) as dname
+        FROM EMP E
+    </select>
+
+</mapper>
