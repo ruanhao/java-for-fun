@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hao.springboot.mybatis.mapper.PowerNodeExercisesMapper">
+
+    <select id="getEmpsWithHighestSalInDept" resultType="com.hao.springboot.mybatis.vo.EmpDptSal">
+        SELECT E.ENAME, E.DEPTNO, E.SAL
+        FROM (SELECT DEPTNO, max(SAL) as maxSal
+              FROM EMP
+              GROUP BY DEPTNO) as T
+        left join EMP as E
+        ON E.DEPTNO = T.DEPTNO and E.SAL = T.maxSal
+    </select>
+
+    <select id="getAvgSalGradeGroupByDept" resultType="com.hao.springboot.mybatis.vo.DeptNoAvgSalGrade">
+        SELECT E.DEPTNO, avg(S.GRADE) as avgSalGrade
+        FROM EMP E
+                 JOIN SALGRADE S
+                      ON E.SAL between S.LOSAL and S.HISAL
+        GROUP BY E.DEPTNO
+    </select>
+
+
+
+</mapper>

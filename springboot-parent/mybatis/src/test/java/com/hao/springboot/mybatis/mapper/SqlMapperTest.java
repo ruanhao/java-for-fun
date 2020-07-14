@@ -190,7 +190,7 @@ class SqlMapperTest {
      * 分组函数在 group by 语句执行之后才会执行，<b>而 group by 在 where 之后才能执行。</b><br/>
      *
      * <pre>
-     *     select     #4
+     *     select     #5
      *       ..
      *     from       #1
      *       ..
@@ -198,7 +198,7 @@ class SqlMapperTest {
      *       ..
      *     group by   #3
      *       ..
-     *     having     #5
+     *     having     #4
      *       ..
      *     order by   #6
      *       ..
